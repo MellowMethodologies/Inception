@@ -1,7 +1,7 @@
 FROM debian:11
 
-RUN apt update -y && apt upgrade -y && apt-get -y install curl \
-&& apt-get -y install wget && apt-get install wp
+RUN apt update -y && apt upgrade -y && apt-get install -y curl
+RUN apt-get install -y wget
 
 RUN apt-get install -y php7.3\
     php-fpm\
