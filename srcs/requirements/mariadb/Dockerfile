@@ -1,13 +1,15 @@
 FROM debian:11
 
-RUN apt update && apt upgrade -y && apt-get install mariadb-server -y
+RUN  apt-get update && apt-get install -y \
+     mariadb-server\
+     mariadb-client
 
-
-COPY conf/50-server.cnf	/etc/mysql/mariadb.conf.d/50-server.cnf		
-COPY ./tools/script.sh /
-
-RUN chmod +x /script.sh
+COPY ./conf/50-server.cnf  /etc/mysql/mariadb.conf.d/50-server.cnf
 
 EXPOSE 3306
 
-CMD service mariadb start && sh "/script.sh"
+COPY ./tools/script.sh /
+
+RUN chmod +x ./script.sh
+
+CMD service mariadb start && sh -c "./script.sh" && mysqld_safe

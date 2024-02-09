@@ -1,22 +1,28 @@
-FROM debian:11
+FROM   debian:11
 
-RUN apt update -y && apt upgrade -y && apt-get install -y curl
-RUN apt-get install -y wget
+RUN apt-get update && apt-get install -y \
+    mariadb-client \
+    php \
+    php-mysql \
+    php-fpm \
+    wget
 
-RUN apt-get install -y php7.3\
-    php-fpm\
-    php-mysql\
-    mariadb-client
+COPY ./www.conf /etc/php/7.4/fpm/pool.d
 
-RUN wget https://fr.wordpress.org/wordpress-6.0-fr_FR.tar.gz -P /var/www
+RUN service php7.4-fpm start
 
-RUN cd /var/www && tar -xzf wordpress-6.0-fr_FR.tar.gz && rm wordpress-6.0-fr_FR.tar.gz
+RUN wget -O /usr/local/bin/wp https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
 
-RUN	chown -R root:root /var/www/wordpress
+RUN chmod +x /usr/local/bin/wp
 
-COPY ./tools/script.sh /
-COPY ./tools/wp-config.php /
+RUN mkdir -p /var/www/html
 
-RUN chmod +x ./script.sh
+WORKDIR /var/www/html
 
-CMD ["./script.sh"]
+COPY /tools/script.sh /
+
+RUN chmod +x /script.sh
+
+EXPOSE 9000
+
+CMD [ "/script.sh" ]
