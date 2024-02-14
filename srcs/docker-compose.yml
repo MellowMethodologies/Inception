@@ -3,8 +3,7 @@ version: "3"
 services:       # précise les différents services (images) à utiliser 
   nginx:
     build: requirements/nginx/ 
-    env_file: .env          # indique le fichier optionnel contenant l'environnement
-    container_name: website # Le nom du container ( doit porter le meme nom que le service d'apres le sujet )
+    container_name: website 
     ports:             # le port, détaillé juste en dessous
       - "443:443"  
     volumes:
@@ -17,8 +16,6 @@ services:       # précise les différents services (images) à utiliser
     container_name: wordpress
     volumes:
       - wordpressfiles:/var/www/html 
-    ports:
-      - "9000:9000"
     networks:
       - mynetwork
   mariadb:
@@ -28,25 +25,23 @@ services:       # précise les différents services (images) à utiliser
     restart: always
     volumes:
       - mariadb:/var/lib/mysql
-    ports:
-      - "3306:3306"
     networks:
       - mynetwork
 
 
 volumes:
   mariadb:
-#     driver: local
-#     driver_opts:
-#       type: none
-#       device: /home/eelhafia/data/mariadb
-#       o: bind
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/sbadr/data/mariadb
+      o: bind
   wordpressfiles:
-#     driver: local
-#     driver_opts:
-#       type: none
-#       device: /home/eelhafia/data/wordpress
-#       o: bind
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/sbadr/data/wordpress
+      o: bind
 
 networks:
   mynetwork:

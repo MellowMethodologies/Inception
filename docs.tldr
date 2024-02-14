@@ -1,9 +1,0 @@
-to delete images you should first delete the container that have that image:
-
-- docker ps -a (show the containers that are not used or exited)
-
-- docker image ls (show image running)
-
-- docker rm $(docker ps -a -q) (rm all docker images)
-
-- docker build -
